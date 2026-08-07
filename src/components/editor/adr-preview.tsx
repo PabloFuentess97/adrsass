@@ -54,8 +54,8 @@ export function AdrPreview() {
   }
 
   return (
-    <div className="grid h-full min-h-[520px] place-items-center rounded-md border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="w-full max-w-[560px]" dangerouslySetInnerHTML={{ __html: svg }} />
+    <div className="preview-frame grid min-h-[calc(100vh-150px)] place-items-center overflow-hidden rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+      <div className="preview-art" dangerouslySetInnerHTML={{ __html: svg }} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import { Download, FileDown, LogOut, PackageCheck } from "lucide-react";
+import { Download, FileDown, LogOut, PackageCheck, RotateCcw } from "lucide-react";
 import { compatibilityGroups, explosiveDivisions, quickSizesMm } from "@/lib/adr/catalog";
 import { buildAdrFilename } from "@/lib/adr/filenames";
 import { validateAdrClassification } from "@/lib/adr/rules";
@@ -19,6 +19,15 @@ function downloadBlob(blob: Blob, filename: string) {
   a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+async function parseErrorResponse(response: Response): Promise<string> {
+  try {
+    const data = (await response.json()) as { error?: string };
+    return data.error ?? response.statusText;
+  } catch {
+    return response.statusText;
+  }
 }
 
 export function EditorShell() {
@@ -101,7 +110,8 @@ export function EditorShell() {
       }),
     });
     if (!response.ok) {
-      set({ status: "Error de exportacion PDF" });
+      const message = await parseErrorResponse(response);
+      set({ status: `Error PDF ${response.status}: ${message}` });
       return;
     }
     downloadBlob(await response.blob(), filename);
@@ -131,7 +141,7 @@ export function EditorShell() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-950">
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/95 px-5 py-3 shadow-sm backdrop-blur">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Generador ADR privado</p>
           <h1 className="text-xl font-semibold">Senales vectoriales para HP Latex Print & Cut</h1>
@@ -142,10 +152,10 @@ export function EditorShell() {
           </Button>
         </form>
       </header>
-      <main className="grid gap-4 p-4 lg:grid-cols-[330px_minmax(0,1fr)_360px]">
-        <section className="grid content-start gap-4 rounded-md border border-slate-200 bg-white p-4 shadow-sm">
-          <h2 className="text-base font-semibold">Plantilla y clasificacion</h2>
-          <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-950">
+      <main className="grid gap-4 p-4 lg:grid-cols-[340px_minmax(520px,1fr)_380px]">
+        <section className="grid max-h-[calc(100vh-92px)] content-start gap-4 overflow-auto rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold text-slate-950">Plantilla y clasificacion</h2>
+          <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm text-blue-950">
             {state.uploadedName ? `Plantilla activa: ${state.uploadedName}` : "Cargando plantilla ADR por defecto. Puedes subir otro SVG local sin guardarlo en servidor."}
           </div>
           <Field label="Subir SVG temporal" hint="Se sanea en el navegador y no se almacena en disco ni base de datos.">
@@ -153,7 +163,7 @@ export function EditorShell() {
           </Field>
           {state.uploadedSvg ? (
             <Button type="button" className="bg-slate-700 hover:bg-slate-900" onClick={() => void loadDefaultTemplate()}>
-              Restaurar ADR por defecto
+              <RotateCcw size={16} /> Restaurar ADR por defecto
             </Button>
           ) : null}
           <Field label="Division">
@@ -190,13 +200,13 @@ export function EditorShell() {
               <Input type="number" value={state.heightMm} readOnly />
             </Field>
           </div>
-          <p className="text-xs leading-5 text-slate-500">
+          <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">
             La aplicacion fabrica la senal desde una clasificacion proporcionada por el usuario. No determina conformidad legal ADR.
           </p>
         </section>
 
-        <section className="grid gap-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+        <section className="grid content-start gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
             <div className="inline-flex rounded-md border border-slate-300 bg-white p-1">
               <button className={`rounded px-3 py-2 text-sm ${state.previewMode === "single" ? "bg-blue-700 text-white" : ""}`} onClick={() => set({ previewMode: "single" })}>
                 Senal
@@ -205,12 +215,12 @@ export function EditorShell() {
                 Bobina
               </button>
             </div>
-            <span className="text-sm text-slate-600">{state.status}</span>
+            <span className="rounded-md bg-slate-100 px-3 py-2 text-sm text-slate-700">{state.status}</span>
           </div>
           <AdrPreview />
         </section>
 
-        <section className="grid content-start gap-4 rounded-md border border-slate-200 bg-white p-4 shadow-sm">
+        <section className="grid max-h-[calc(100vh-92px)] content-start gap-4 overflow-auto rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
           <h2 className="text-base font-semibold">Produccion y exportacion</h2>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Cantidad">
@@ -264,13 +274,13 @@ export function EditorShell() {
               </Select>
             </Field>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm leading-6">
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm leading-6">
             <div>Ancho seguro: <b>{usage.safeWidthMm} mm</b></div>
             <div>Ocupado: <b>{usage.occupiedWidthMm} mm</b> · Libre: <b>{usage.freeWidthMm} mm</b></div>
             <div>Copias/fila: <b>{usage.copiesPerRow}</b> · Filas: <b>{usage.rows}</b></div>
             <div>Metros ATP: <b>{usage.linearMeters}</b> · Aprovechamiento: <b>{usage.utilizationPercent}%</b></div>
           </div>
-          {usage.errors.length ? <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{usage.errors.join(" ")}</div> : null}
+          {usage.errors.length ? <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{usage.errors.join(" ")}</div> : null}
           <div className="grid gap-2">
             <Button type="button" onClick={downloadSvg}>
               <Download size={16} /> Descargar SVG

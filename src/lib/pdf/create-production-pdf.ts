@@ -79,6 +79,7 @@ export async function createProductionPdf(input: ProductionPdfInput): Promise<Bu
         height: h,
         preserveAspectRatio: "xMidYMid meet",
         assumePt: false,
+        fontCallback: (_family, bold) => (bold ? "Helvetica-Bold" : "Helvetica"),
       });
     }
     if (!input.proof) {
