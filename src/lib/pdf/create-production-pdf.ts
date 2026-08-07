@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import PDFDocument from "pdfkit";
 import SVGtoPDF from "svg-to-pdfkit";
 import { mmToPdfPoints } from "@/lib/units/millimeters";
@@ -19,6 +20,11 @@ function collectPdf(doc: PDFKit.PDFDocument): Promise<Buffer> {
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
   });
+}
+
+function registerAdrFonts(doc: PDFKit.PDFDocument) {
+  doc.registerFont("NotoSansADR", join(process.cwd(), "public", "fonts", "noto-sans", "NotoSans-Regular.woff2"));
+  doc.registerFont("NotoSansADR-Bold", join(process.cwd(), "public", "fonts", "noto-sans", "NotoSans-Bold.woff2"));
 }
 
 function drawCutContour(
@@ -58,6 +64,7 @@ export async function createProductionPdf(input: ProductionPdfInput): Promise<Bu
       Producer: "ADR Generator",
     },
   });
+  registerAdrFonts(doc);
   const done = collectPdf(doc);
   (doc as PDFKit.PDFDocument & { addSpotColor: (name: string, c: number, m: number, y: number, k: number) => PDFKit.PDFDocument }).addSpotColor(
     input.spotName || "CutContour",
@@ -79,7 +86,7 @@ export async function createProductionPdf(input: ProductionPdfInput): Promise<Bu
         height: h,
         preserveAspectRatio: "xMidYMid meet",
         assumePt: false,
-        fontCallback: (_family, bold) => (bold ? "Helvetica-Bold" : "Helvetica"),
+        fontCallback: (_family, bold) => (bold ? "NotoSansADR-Bold" : "NotoSansADR"),
       });
     }
     if (!input.proof) {
