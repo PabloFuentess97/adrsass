@@ -62,7 +62,7 @@ export async function createProductionPdf(input: ProductionPdfInput): Promise<Bu
   (doc as PDFKit.PDFDocument & { addSpotColor: (name: string, c: number, m: number, y: number, k: number) => PDFKit.PDFDocument }).addSpotColor(
     input.spotName || "CutContour",
     0,
-    1,
+    100,
     0,
     0,
   );

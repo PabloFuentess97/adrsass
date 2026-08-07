@@ -52,7 +52,8 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error("PDF_EXPORT_FAILED", error instanceof Error ? error.message : "unknown");
-    return NextResponse.json({ error: "Error interno" }, { status: 500, headers: noStoreHeaders });
+    const message = error instanceof Error ? error.message : "unknown";
+    console.error("PDF_EXPORT_FAILED", message, error instanceof Error ? error.stack : "");
+    return NextResponse.json({ error: `Error interno al generar PDF: ${message}` }, { status: 500, headers: noStoreHeaders });
   }
 }
