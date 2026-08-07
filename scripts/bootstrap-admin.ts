@@ -2,10 +2,9 @@ import { randomUUID } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hashPassword } from "better-auth/crypto";
+import { getDatabaseConfig } from "../src/lib/auth/database";
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL ?? "postgresql://user:password@localhost:5432/adr",
-});
+const adapter = new PrismaPg(getDatabaseConfig());
 
 const prisma = new PrismaClient({ adapter });
 
@@ -53,8 +52,8 @@ async function main() {
 }
 
 main()
-  .catch(() => {
-    console.error("BOOTSTRAP_ADMIN_FAILED");
+  .catch((error) => {
+    console.error("BOOTSTRAP_ADMIN_FAILED", error instanceof Error ? error.message : "unknown");
     process.exitCode = 1;
   })
   .finally(async () => {
