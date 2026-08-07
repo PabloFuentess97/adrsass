@@ -1,0 +1,48 @@
+%PDF-1.6
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 283.465 283.465] /Resources << /ColorSpace << /CutContour 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 255 >>
+stream
+q
+0.956 0.482 0.125 rg
+0.000 0.000 283.465 283.465 re f
+0.067 0.094 0.153 RG 9 w
+0.000 0.000 283.465 283.465 re S
+0.067 0.094 0.153 rg
+119.055 158.740 m 141.732 215.433 l 164.409 158.740 l h f
+/CutContour CS
+1 SCN
+0.35 w
+0.000 0.000 283.465 283.465 re S
+Q
+endstream
+endobj
+5 0 obj
+[/Separation /CutContour /DeviceCMYK << /FunctionType 2 /Domain [0 1] /C0 [0 0 0 0] /C1 [0 1 0 0] /N 1 >>]
+endobj
+6 0 obj
+<< /Title (ADR 100x100 CutContour fixture) /Producer (ADR Generator) >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000269 00000 n 
+0000000575 00000 n 
+0000000697 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R /Info 6 0 R >>
+startxref
+784
+%%EOF

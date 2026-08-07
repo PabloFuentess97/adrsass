@@ -1,0 +1,23 @@
+# Checklist de validacion ONYX / CUT-Server
+
+- [ ] Version de ONYX:
+- [ ] PosterShop Launcher / RIP-Queue usado:
+- [ ] Quick Set usado:
+- [ ] `Use Cutter Path Prefix` activado:
+- [ ] Prefijo configurado exactamente como `CutContour`:
+- [ ] HP Latex 830W seleccionada:
+- [ ] HP Latex 64 Plus Cutter disponible en CUT-Server:
+- [ ] Ancho de rollo cargado:
+- [ ] Material:
+- [ ] PDF de prueba importado:
+- [ ] La linea `CutContour` no se imprime:
+- [ ] La ruta aparece como corte:
+- [ ] Marcas leidas correctamente:
+- [ ] Presion:
+- [ ] Velocidad:
+- [ ] Tamano medido X/Y:
+- [ ] Desviacion X:
+- [ ] Desviacion Y:
+- [ ] Resultado Kiss Cut:
+- [ ] Resultado FlexCut, si procede:
+- [ ] Observaciones:

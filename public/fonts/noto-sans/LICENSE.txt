@@ -1,0 +1,3 @@
+Noto Sans se distribuye bajo SIL Open Font License 1.1.
+Archivo empaquetado localmente desde @fontsource/noto-sans para evitar Google Fonts/CDN.
+Texto completo de la licencia: https://scripts.sil.org/OFL

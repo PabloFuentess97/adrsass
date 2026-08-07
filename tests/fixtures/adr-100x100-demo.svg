@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -30 1060 1060" width="106mm" height="106mm" role="img" aria-label="Senal ADR clase 1">
+<g id="adr-background"><rect x="-30" y="-30" width="1060" height="1060" fill="#f47b20"/></g>
+<g id="adr-border"><rect x="22" y="22" width="956" height="956" fill="none" stroke="#111827" stroke-width="32"/></g>
+<g id="adr-symbol" fill="#111827">
+<path d="M500 95 546 237 696 237 575 325 621 467 500 379 379 467 425 325 304 237 454 237Z"/>
+<path d="M238 225 322 282 250 326 386 360 310 430 455 392 432 550 500 410 568 550 545 392 690 430 614 360 750 326 678 282 762 225 620 246 610 120 548 232 500 130 452 232 390 120 380 246Z"/>
+</g>
+<g id="adr-division"><path d="M415.82 627H443.88V749H409.71999999999997V656.28L395.08 663.6V636.76Z M480.48 714.84H514.64V749H480.48Z M570.76 627H600.04V749H570.76V712.4H519.52V685.56L561 627H592.72L548.8 685.56H570.76Z" fill="#111827"/></g>
+<g id="adr-compatibility"><path d="M467.52 749H530.24V775.88H483.2V791.56H519.04L532.48 805V847.56L519.04 861H456.32V834.12H505.6V818.44H469.76L456.32 805V762.44Z" fill="#111827"/></g>
+<g id="adr-class-number"><path d="M486.56 880H508.64V976H481.76V903.04L470.24 908.8V887.68Z" fill="#111827"/></g>
+<g id="adr-safe-area"><rect x="70" y="70" width="860" height="860" fill="none" stroke="#2563eb" stroke-width="6" stroke-dasharray="18 14" opacity=".35"/></g>
+<g id="adr-cut-shape"><path id="CutContour" data-spot-name="CutContour" d="M0 0H1000V1000H0Z" fill="none" stroke="CutContour" stroke-width="1" vector-effect="non-scaling-stroke"/></g>
+</svg>
