@@ -7,9 +7,11 @@ export function pdfContainsSpotColor(pdf: Buffer, spotName = "CutContour"): bool
 
 export function pdfHasExpectedMediaBox(pdf: Buffer, widthMm: number, heightMm: number): boolean {
   const text = pdf.toString("latin1");
-  const width = mmToPdfPoints(widthMm).toFixed(3);
-  const height = mmToPdfPoints(heightMm).toFixed(3);
-  return text.includes(`/MediaBox [0 0 ${width} ${height}]`);
+  const match = text.match(/\/MediaBox\s*\[\s*0\s+0\s+([0-9.]+)\s+([0-9.]+)\s*\]/);
+  if (!match) return false;
+  const width = Number(match[1]);
+  const height = Number(match[2]);
+  return Math.abs(width - mmToPdfPoints(widthMm)) < 0.01 && Math.abs(height - mmToPdfPoints(heightMm)) < 0.01;
 }
 
 export function pdfLooksVectorOnly(pdf: Buffer): boolean {

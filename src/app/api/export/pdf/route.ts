@@ -34,13 +34,14 @@ export async function POST(request: Request) {
     if (!sanitized.svg.includes("adr-cut-shape")) {
       return NextResponse.json({ error: "Contorno no procesable" }, { status: 422, headers: noStoreHeaders });
     }
-    const pdf = createProductionPdf({
+    const pdf = await createProductionPdf({
       widthMm: parsed.data.document.widthMm,
       heightMm: parsed.data.document.heightMm,
       spotName: parsed.data.cut.spotName,
       proof: parsed.data.proof || !parsed.data.cut.enabled,
       pieces: parsed.data.pieces,
       title: parsed.data.filename,
+      svg: sanitized.svg,
     });
     return new Response(new Uint8Array(pdf), {
       status: 200,
