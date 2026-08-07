@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npm run db:migrate && npm run bootstrap:admin && next start -p 3000",
+    "start": "tsx scripts/start.ts",
     "db:migrate": "prisma migrate deploy",
     "bootstrap:admin": "tsx scripts/bootstrap-admin.ts",
     "lint": "eslint",

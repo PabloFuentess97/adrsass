@@ -5,7 +5,7 @@
 3. Crear un Web Service conectado al repositorio.
 4. Configurar build command: `npm run build`.
 5. Configurar start command: `npm run start`.
-6. Configurar puerto `3000`.
+6. Configurar puerto `80` y variable `PORT=80`.
 7. Anadir variables de `.env.example`.
 8. Definir temporalmente `ADMIN_BOOTSTRAP_EMAIL` y `ADMIN_BOOTSTRAP_PASSWORD`.
 9. Desplegar.
@@ -16,4 +16,4 @@
 
 No se necesita volumen persistente, Redis ni almacenamiento de objetos. Los PDF y SVG de trabajos se procesan en memoria y se descargan directamente.
 
-Si Seenode detecta Dockerfile, tambien puede construir con Docker. En ese caso sigue usando las mismas variables y puerto `3000`.
+Si Seenode detecta Dockerfile, tambien puede construir con Docker. En ese caso sigue usando las mismas variables y puerto `80`.

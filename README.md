@@ -46,4 +46,4 @@ El flujo previsto es: aplicacion web -> PDF vectorial con `/Separation /CutConto
 
 ## Seenode
 
-Ver `docs/deployment-seenode.md`. El arranque ejecuta migraciones y bootstrap administrativo idempotente.
+Ver `docs/deployment-seenode.md`. El arranque ejecuta migraciones y bootstrap administrativo idempotente, y escucha en `0.0.0.0` usando `PORT`.
