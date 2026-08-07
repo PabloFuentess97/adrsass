@@ -22,6 +22,7 @@ describe("SVG personalizado", () => {
     });
     expect(rendered).toContain("adr-uploaded-template");
     expect(rendered).toContain("CutContour");
-    expect(rendered).not.toContain("<text");
+    expect(rendered).toContain("font-family=\"Noto Sans ADR");
+    expect(rendered).toContain("clip-path=");
   });
 });

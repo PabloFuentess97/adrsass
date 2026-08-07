@@ -46,6 +46,7 @@ const allowedAttrs = new Set([
   "stroke-miterlimit",
   "fill-rule",
   "clip-rule",
+  "clip-path",
   "transform",
   "font-family",
   "font-size",
@@ -87,7 +88,7 @@ function sanitizeNode(value: unknown, key: string, removed: string[], count: { v
       if (
         !allowedAttrs.has(attr) ||
         (!isNamespace && attr.toLowerCase().startsWith("on")) ||
-        (!isSvgNamespace && !isNamespace && /url\(|javascript:|https?:\/\/|file:|@import/i.test(attrValue))
+        (!isSvgNamespace && !isNamespace && !/^url\(#[-_A-Za-z0-9]+\)$/.test(attrValue) && /url\(|javascript:|https?:\/\/|file:|@import/i.test(attrValue))
       ) {
         removed.push(`${key}.${attr}`);
         continue;
