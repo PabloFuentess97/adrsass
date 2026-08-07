@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useEffect } from "react";
 import { Download, FileDown, LogOut, PackageCheck } from "lucide-react";
 import { compatibilityGroups, explosiveDivisions, quickSizesMm } from "@/lib/adr/catalog";
 import { buildAdrFilename } from "@/lib/adr/filenames";
@@ -31,6 +32,30 @@ export function EditorShell() {
     heightMm: state.heightMm,
     quantity: state.quantity,
   };
+
+  const loadDefaultTemplate = useCallback(async () => {
+    try {
+      const response = await fetch("/templates/adr/adr-default.svg", { cache: "force-cache" });
+      if (!response.ok) throw new Error("No se pudo cargar la plantilla");
+      const raw = await response.text();
+      const sanitized = sanitizeSvg(raw);
+      set({
+        uploadedSvg: sanitized.svg,
+        uploadedName: "ADR 1-1 D-1 10x10.svg",
+        widthMm: 100,
+        heightMm: 100,
+        status: "Plantilla ADR por defecto cargada",
+      });
+    } catch {
+      set({ status: "No se pudo cargar la plantilla por defecto; usando demo tecnica" });
+    }
+  }, [set]);
+
+  useEffect(() => {
+    if (!state.uploadedSvg) {
+      void loadDefaultTemplate();
+    }
+  }, [loadDefaultTemplate, state.uploadedSvg]);
 
   async function downloadSvg() {
     try {
@@ -121,14 +146,14 @@ export function EditorShell() {
         <section className="grid content-start gap-4 rounded-md border border-slate-200 bg-white p-4 shadow-sm">
           <h2 className="text-base font-semibold">Plantilla y clasificacion</h2>
           <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-950">
-            {state.uploadedName ? `Plantilla temporal: ${state.uploadedName}` : "Plantilla de demostracion tecnica. Puedes subir un SVG ADR local sin guardarlo en servidor."}
+            {state.uploadedName ? `Plantilla activa: ${state.uploadedName}` : "Cargando plantilla ADR por defecto. Puedes subir otro SVG local sin guardarlo en servidor."}
           </div>
           <Field label="Subir SVG temporal" hint="Se sanea en el navegador y no se almacena en disco ni base de datos.">
             <Input type="file" accept=".svg,image/svg+xml" onChange={(event) => uploadTemplate(event.target.files?.[0])} />
           </Field>
           {state.uploadedSvg ? (
-            <Button type="button" className="bg-slate-700 hover:bg-slate-900" onClick={() => set({ uploadedSvg: undefined, uploadedName: undefined, status: "Plantilla demo restaurada" })}>
-              Usar plantilla demo
+            <Button type="button" className="bg-slate-700 hover:bg-slate-900" onClick={() => void loadDefaultTemplate()}>
+              Restaurar ADR por defecto
             </Button>
           ) : null}
           <Field label="Division">
@@ -194,6 +219,13 @@ export function EditorShell() {
             <Field label="Sangrado mm">
               <Input type="number" min={0} max={20} value={state.bleedMm} onChange={(event) => set({ bleedMm: Number(event.target.value) })} />
             </Field>
+            <div className="col-span-2 grid grid-cols-4 gap-2">
+              {[0, 2, 3, 5].map((bleed) => (
+                <Button key={bleed} type="button" className="min-h-9 bg-slate-700 px-2 py-1 hover:bg-slate-900" onClick={() => set({ bleedMm: bleed })}>
+                  {bleed} mm
+                </Button>
+              ))}
+            </div>
             <Field label="Separacion H">
               <Input type="number" min={0} value={state.horizontalGapMm} onChange={(event) => set({ horizontalGapMm: Number(event.target.value) })} />
             </Field>
@@ -203,6 +235,13 @@ export function EditorShell() {
             <Field label="Rollo mm">
               <Input type="number" value={state.rollWidthMm} onChange={(event) => set({ rollWidthMm: Number(event.target.value) })} />
             </Field>
+            <div className="col-span-2 grid grid-cols-3 gap-2">
+              {[1370, 1524, 1600].map((roll) => (
+                <Button key={roll} type="button" className="min-h-9 bg-slate-700 px-2 py-1 hover:bg-slate-900" onClick={() => set({ rollWidthMm: roll })}>
+                  {roll}
+                </Button>
+              ))}
+            </div>
             <Field label="Margen izq.">
               <Input type="number" min={10} value={state.leftMarginMm} onChange={(event) => set({ leftMarginMm: Number(event.target.value) })} />
             </Field>

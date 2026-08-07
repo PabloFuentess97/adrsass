@@ -33,12 +33,17 @@ export function renderCustomAdrSvg(input: {
   const divisionPath = textToPathData(input.division, centerX, divisionY, vbHeight * 0.075);
   const groupPath = textToPathData(input.compatibilityGroup, centerX, groupY, vbHeight * 0.07);
   const classPath = textToPathData(input.classNumber, centerX, classY, vbHeight * 0.06);
+  const textPatchX = minX + vbWidth * 0.32;
+  const textPatchY = minY + vbHeight * 0.57;
+  const textPatchWidth = vbWidth * 0.36;
+  const textPatchHeight = vbHeight * 0.39;
   const cut = input.includeCut
     ? `<path id="CutContour" data-spot-name="${input.spotName}" d="M${minX} ${minY}H${minX + vbWidth}V${minY + vbHeight}H${minX}Z" fill="none" stroke="${input.spotName}" stroke-width="1" vector-effect="non-scaling-stroke"/>`
     : "";
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX - bleedX} ${minY - bleedY} ${vbWidth + bleedX * 2} ${vbHeight + bleedY * 2}" width="${input.widthMm + input.bleedMm * 2}mm" height="${input.heightMm + input.bleedMm * 2}mm" role="img" aria-label="Senal ADR personalizada">
 <g id="adr-uploaded-template">${getInnerSvg(clean)}</g>
+<g id="adr-editable-cover"><rect x="${textPatchX}" y="${textPatchY}" width="${textPatchWidth}" height="${textPatchHeight}" fill="#ed6b28"/></g>
 <g id="adr-division"><path d="${divisionPath}" fill="#111827"/></g>
 <g id="adr-compatibility"><path d="${groupPath}" fill="#111827"/></g>
 <g id="adr-class-number"><path d="${classPath}" fill="#111827"/></g>

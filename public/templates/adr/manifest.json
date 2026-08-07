@@ -1,6 +1,17 @@
 {
   "templates": [
     {
+      "id": "adr-default",
+      "name": "ADR autorizado por defecto",
+      "path": "/templates/adr/adr-default.svg",
+      "widthMm": 100,
+      "heightMm": 100,
+      "fontFamily": "Noto Sans",
+      "fontAsset": "/fonts/noto-sans/NotoSans-Regular.woff2",
+      "convertTextToPaths": true,
+      "note": "Plantilla ADR aportada por el propietario, saneada y recortada para uso por defecto."
+    },
+    {
       "id": "class-1-demo",
       "name": "ADR clase 1 demo tecnica",
       "path": "/templates/adr/class-1-demo.svg",
