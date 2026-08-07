@@ -5,6 +5,7 @@ import { compatibilityGroups, explosiveDivisions, quickSizesMm } from "@/lib/adr
 import { buildAdrFilename } from "@/lib/adr/filenames";
 import { validateAdrClassification } from "@/lib/adr/rules";
 import { sanitizeSvg } from "@/lib/svg/sanitize-svg";
+import { parseSvgDimensions } from "@/lib/svg/parse-svg";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/field";
 import { AdrPreview } from "./adr-preview";
@@ -82,6 +83,27 @@ export function EditorShell() {
     set({ status: proof ? "PDF de prueba exportado" : "PDF de produccion exportado" });
   }
 
+  async function uploadTemplate(file?: File) {
+    if (!file) return;
+    try {
+      set({ status: "Saneando plantilla SVG" });
+      const raw = await file.text();
+      const sanitized = sanitizeSvg(raw);
+      const dimensions = parseSvgDimensions(sanitized.svg);
+      const ratio = dimensions.widthMm / dimensions.heightMm;
+      if (ratio > 0.8 && ratio < 1.2) {
+        set({ widthMm: 100, heightMm: 100 });
+      }
+      set({
+        uploadedSvg: sanitized.svg,
+        uploadedName: file.name,
+        status: `Plantilla temporal cargada (${sanitized.nodeCount} nodos, ${sanitized.removed.length} elementos/atributos limpiados)`,
+      });
+    } catch {
+      set({ status: "SVG no valido o demasiado complejo" });
+    }
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-950">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
@@ -99,8 +121,16 @@ export function EditorShell() {
         <section className="grid content-start gap-4 rounded-md border border-slate-200 bg-white p-4 shadow-sm">
           <h2 className="text-base font-semibold">Plantilla y clasificacion</h2>
           <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-950">
-            Plantilla de demostracion tecnica. Sustituye el SVG autorizado en <code>public/templates/adr</code>.
+            {state.uploadedName ? `Plantilla temporal: ${state.uploadedName}` : "Plantilla de demostracion tecnica. Puedes subir un SVG ADR local sin guardarlo en servidor."}
           </div>
+          <Field label="Subir SVG temporal" hint="Se sanea en el navegador y no se almacena en disco ni base de datos.">
+            <Input type="file" accept=".svg,image/svg+xml" onChange={(event) => uploadTemplate(event.target.files?.[0])} />
+          </Field>
+          {state.uploadedSvg ? (
+            <Button type="button" className="bg-slate-700 hover:bg-slate-900" onClick={() => set({ uploadedSvg: undefined, uploadedName: undefined, status: "Plantilla demo restaurada" })}>
+              Usar plantilla demo
+            </Button>
+          ) : null}
           <Field label="Division">
             <Select value={state.division} onChange={(event) => set({ division: event.target.value })}>
               {explosiveDivisions.map((division) => (

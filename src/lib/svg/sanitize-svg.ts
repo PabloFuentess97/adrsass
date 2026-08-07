@@ -53,6 +53,7 @@ const allowedAttrs = new Set([
   "text-anchor",
   "dominant-baseline",
   "aria-label",
+  "style",
 ]);
 
 const blockedPattern = /<!ENTITY|<!DOCTYPE|<\s*(script|foreignObject|iframe|object|embed)\b|javascript:|file:/i;
@@ -82,10 +83,11 @@ function sanitizeNode(value: unknown, key: string, removed: string[], count: { v
       const attr = childKey.slice(2);
       const attrValue = String(childValue);
       const isSvgNamespace = attr === "xmlns" && attrValue === "http://www.w3.org/2000/svg";
+      const isNamespace = attr === "xmlns" || attr.startsWith("xmlns:");
       if (
         !allowedAttrs.has(attr) ||
-        attr.toLowerCase().startsWith("on") ||
-        (!isSvgNamespace && /url\(|javascript:|https?:\/\/|file:/i.test(attrValue))
+        (!isNamespace && attr.toLowerCase().startsWith("on")) ||
+        (!isSvgNamespace && !isNamespace && /url\(|javascript:|https?:\/\/|file:|@import/i.test(attrValue))
       ) {
         removed.push(`${key}.${attr}`);
         continue;

@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { calculateMaterialUsage } from "@/lib/layout/calculate-grid";
 import type { MaterialUsage } from "@/lib/layout/types";
+import { renderCustomAdrSvg } from "@/lib/svg/render-custom-svg";
 import { renderAdrSvg } from "@/lib/svg/render-adr-svg";
 
 export type CutMode = "kiss-cut" | "flex-cut";
@@ -27,6 +28,8 @@ export interface EditorState {
   spotName: string;
   previewMode: "single" | "roll";
   status: string;
+  uploadedSvg?: string;
+  uploadedName?: string;
   set: (patch: Partial<EditorState>) => void;
 }
 
@@ -69,6 +72,19 @@ export function selectUsage(state: EditorState): MaterialUsage {
 }
 
 export function selectSvg(state: EditorState, includeCut = true): string {
+  if (state.uploadedSvg) {
+    return renderCustomAdrSvg({
+      sanitizedSvg: state.uploadedSvg,
+      division: state.division,
+      compatibilityGroup: state.compatibilityGroup,
+      classNumber: state.classNumber,
+      widthMm: state.widthMm,
+      heightMm: state.heightMm,
+      bleedMm: state.bleedMm,
+      spotName: state.spotName,
+      includeCut,
+    });
+  }
   return renderAdrSvg({
     division: state.division,
     compatibilityGroup: state.compatibilityGroup,
