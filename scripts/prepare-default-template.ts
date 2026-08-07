@@ -13,7 +13,7 @@ const parsed = parser.parse(sanitized.svg) as { svg: Record<string, unknown> };
 parsed.svg["@_width"] = "100mm";
 parsed.svg["@_height"] = "100mm";
 parsed.svg["@_id"] = "adr-default-template";
-parsed.svg["@_viewBox"] = "230 285 570 570";
+parsed.svg["@_viewBox"] = "244 295 544 544";
 
 const builder = new XMLBuilder({ ignoreAttributes: false, suppressEmptyNode: true, format: true });
 writeFileSync(destination, builder.build(parsed));

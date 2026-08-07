@@ -35,7 +35,7 @@ export function EditorShell() {
 
   const loadDefaultTemplate = useCallback(async () => {
     try {
-      const response = await fetch("/templates/adr/adr-default.svg", { cache: "force-cache" });
+      const response = await fetch("/templates/adr/adr-default.svg?v=3", { cache: "no-store" });
       if (!response.ok) throw new Error("No se pudo cargar la plantilla");
       const raw = await response.text();
       const sanitized = sanitizeSvg(raw);
